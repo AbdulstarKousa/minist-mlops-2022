@@ -5,28 +5,38 @@ from dotenv import find_dotenv, load_dotenv
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
+
 class TrainOREvaluate(object):
     """ Helper class that will help launch class methods as commands
         from a single script
     """
+
     def __init__(self):
         getattr(self, "evaluate")()
-    
 
     def evaluate(self):
+        """
+        Function to Predict. Takes a pre-trained model file and creates prediction for some data.
+
+                Parameters:
+                    Pass from the terminal: path to Model, path to example images, path to example labels 
+
+                Returns:
+                    print the predictions, the true labels and the accuracy of the model.
+        """
         print("Evaluating until hitting the ceiling")
-        parser = argparse.ArgumentParser(description='Training arguments')
-        parser.add_argument('load_model_from', default="")
-        parser.add_argument('load_images_from', default="")
-        parser.add_argument('load_labels_from', default="")  
+        parser = argparse.ArgumentParser(description="Training arguments")
+        parser.add_argument("load_model_from", default="")
+        parser.add_argument("load_images_from", default="")
+        parser.add_argument("load_labels_from", default="")
         # add any additional argument that you want
-        args = parser.parse_args() 
+        args = parser.parse_args()
         print(args)
-        
+
         # TODO-Done: Implement evaluation logic here
         model = torch.load(args.load_model_from)
         test_imgs = torch.load(args.load_images_from)
-        test_labs = torch.load(args.load_labels_from)        
+        test_labs = torch.load(args.load_labels_from)
         test_ds = TensorDataset(test_imgs, test_labs)
         test_dl = DataLoader(test_ds, batch_size=10, shuffle=False)
 
@@ -37,17 +47,17 @@ class TrainOREvaluate(object):
                 log_ps = model(images)
                 ps = torch.exp(log_ps)
                 _, top_class = ps.topk(1, dim=1)
-                print('True label:', labels.numpy().flatten())
-                print('Predicted :', top_class.numpy().flatten())
-                equals = top_class == labels.view(*top_class.shape)                
+                print("True label:", labels.numpy().flatten())
+                print("Predicted :", top_class.numpy().flatten())
+                equals = top_class == labels.view(*top_class.shape)
                 test_correct += equals.sum().item()
         print("Accuracy: {:.3f}".format(test_correct / len(test_dl.dataset)))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # find .env automagically by walking up directories until it's found, then
     # load up the .env entries as environment variables
     load_dotenv(find_dotenv())
-
 
     TrainOREvaluate()
 

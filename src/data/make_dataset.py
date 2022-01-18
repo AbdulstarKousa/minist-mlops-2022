@@ -9,24 +9,25 @@ import os
 
 import torch
 
+
 @click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
+@click.argument("input_filepath", type=click.Path(exists=True))
+@click.argument("output_filepath", type=click.Path())
 def main(input_filepath, output_filepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    logger.info("making final data set from raw data")
 
     # ====== Test Data
     # load
-    test_imgs = np.load(os.path.join(input_filepath, 'test.npz'))['images']
-    test_labs = np.load(os.path.join(input_filepath, 'test.npz'))['labels']
-    
+    test_imgs = np.load(os.path.join(input_filepath, "test.npz"))["images"]
+    test_labs = np.load(os.path.join(input_filepath, "test.npz"))["labels"]
+
     # to tensor
-    test_imgs  = torch.Tensor(test_imgs)
-    test_labs  = torch.Tensor(test_labs).type(torch.LongTensor)
+    test_imgs = torch.Tensor(test_imgs)
+    test_labs = torch.Tensor(test_labs).type(torch.LongTensor)
     # normalize
     test_imgs = torch.nn.functional.normalize(test_imgs)
     # save
@@ -37,12 +38,18 @@ def main(input_filepath, output_filepath):
 
     # ====== Train Data
     # load
-    filenames = ['train_0.npz', 'train_1.npz', 'train_2.npz', 'train_3.npz', 'train_4.npz']
+    filenames = [
+        "train_0.npz",
+        "train_1.npz",
+        "train_2.npz",
+        "train_3.npz",
+        "train_4.npz",
+    ]
     train_imgs_lst = []
     train_labs_lst = []
     for filename in filenames:
-        train_imgs_lst.append(np.load(os.path.join(input_filepath, filename))['images'])
-        train_labs_lst.append(np.load(os.path.join(input_filepath, filename))['labels'])
+        train_imgs_lst.append(np.load(os.path.join(input_filepath, filename))["images"])
+        train_labs_lst.append(np.load(os.path.join(input_filepath, filename))["labels"])
     train_imgs = np.concatenate(tuple(train_imgs_lst))
     train_labs = np.concatenate(tuple(train_labs_lst))
     # to tensor
@@ -56,8 +63,9 @@ def main(input_filepath, output_filepath):
     torch.save(train_imgs, os.path.join(output_filepath, "train_images.pt"))
     torch.save(train_labs, os.path.join(output_filepath, "train_labels.pt"))
 
-if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+if __name__ == "__main__":
+    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=log_fmt)
 
     # not used in this stub but often useful for finding various files
