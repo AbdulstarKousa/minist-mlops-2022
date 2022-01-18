@@ -1,14 +1,13 @@
 # from data import mnist
-from model import MyAwesomeModel
-
-import numpy as np
-import matplotlib.pyplot as plt
+import argparse
 import os
 import sys
-import argparse
-from dotenv import find_dotenv, load_dotenv
 
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
+from dotenv import find_dotenv, load_dotenv
+from model import MyAwesomeModel
 from torch import nn, optim
 from torch.utils.data import DataLoader, TensorDataset
 

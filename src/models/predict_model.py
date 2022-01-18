@@ -1,8 +1,8 @@
 # from data import mnist
 import argparse
-from dotenv import find_dotenv, load_dotenv
 
 import torch
+from dotenv import find_dotenv, load_dotenv
 from torch.utils.data import DataLoader, TensorDataset
 
 
