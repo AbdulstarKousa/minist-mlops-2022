@@ -43,6 +43,9 @@ def main(input_filepath, output_filepath):
         "train_2.npz",
         "train_3.npz",
         "train_4.npz",
+        "train_5.npz",
+        "train_6.npz",
+        "train_7.npz",
     ]
     train_imgs_lst = []
     train_labs_lst = []
